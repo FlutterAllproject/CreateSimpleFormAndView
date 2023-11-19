@@ -1,19 +1,27 @@
 import 'package:create_simple_form/details.dart';
 import 'package:flutter/material.dart';
 
-class MyForm extends StatefulWidget {
-  const MyForm({super.key});
+class MyForms extends StatefulWidget {
+  const MyForms({super.key});
 
   @override
-  State<MyForm> createState() => _MyFormState();
+  State<MyForms> createState() => _MyFormState();
 }
 
-class _MyFormState extends State<MyForm> {
+class _MyFormState extends State<MyForms> {
   var _productName;
+  final _productController = TextEditingController();
 
-  void _updateText(val) {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _productController.addListener(_updateText);
+  }
+
+  void _updateText() {
     setState(() {
-      _productName = val;
+      _productName = _productController.text;
     });
   }
 
@@ -35,16 +43,14 @@ class _MyFormState extends State<MyForm> {
             //   ),
             // ),
             TextFormField(
-              onChanged: (val) {
-                _updateText(val);
-              },
+              controller: _productController,
               decoration: InputDecoration(
                 labelText: "Product Name",
                 prefixIcon: Icon(Icons.verified_outlined),
                 border: OutlineInputBorder(),
               ),
             ),
-            Text("Product Name is $_productName"),
+            Text("Product Name is ${_productController.text}"),
           ]),
         ));
   }

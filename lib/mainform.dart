@@ -1,21 +1,25 @@
 import 'package:create_simple_form/details.dart';
 import 'package:flutter/material.dart';
 
-class MyForm extends StatefulWidget {
-  const MyForm({super.key});
+class MainForm extends StatefulWidget {
+  const MainForm({super.key});
 
   @override
-  State<MyForm> createState() => _MyFormState();
+  State<MainForm> createState() => _MyFormState();
 }
 
-class _MyFormState extends State<MyForm> {
+class _MyFormState extends State<MainForm> {
   var _productName;
+  final _productController = TextEditingController();
 
-  void _updateText(val) {
-    setState(() {
-      _productName = val;
-    });
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _productController.dispose();
+    super.dispose();
   }
+
+  void _updateText() {}
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +39,15 @@ class _MyFormState extends State<MyForm> {
             //   ),
             // ),
             TextFormField(
-              onChanged: (val) {
-                _updateText(val);
-              },
+              controller: _productController,
               decoration: InputDecoration(
                 labelText: "Product Name",
                 prefixIcon: Icon(Icons.verified_outlined),
                 border: OutlineInputBorder(),
               ),
             ),
-            Text("Product Name is $_productName"),
+            SizedBox(height: 20.0),
+            myBtn(context),
           ]),
         ));
   }
@@ -54,7 +57,9 @@ class _MyFormState extends State<MyForm> {
       style: OutlinedButton.styleFrom(minimumSize: const Size(200, 50)),
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Details();
+          return Details(
+            productName: _productController.text,
+          );
         }));
       },
       child: Text(
